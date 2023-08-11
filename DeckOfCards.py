@@ -2,6 +2,16 @@ import random
 
 class Card:
     def __init__(self, value, suit):
+        """
+        A class representing a playing card.
+
+        Attributes:
+            value (str): The value of the card, such as "A" or "5".
+            suit (str): The suit of the card, such as "Hearts" or "Diamonds".
+
+        Methods:
+            __repr__(self): Returns a string representation of the card.
+        """
         self.value = value
         self.suit = suit
 
@@ -10,7 +20,7 @@ class Card:
 
 class DeckOfCards:
     def __init__(self):
-        """Using the Card class, create list of 52 cards, 13 (2-A) from each suit (Hearts, Diamonds, Spades, Clubs)
+        """Using the Card class, creates list of 52 cards, 13 (2-A) from each suit (Hearts, Diamonds, Spades, Clubs)
         
         Args:
         None
@@ -81,36 +91,69 @@ class DeckOfCards:
         return(hands)
 
 class Player(DeckOfCards):
+    """Initializes a Player object.
+    
+    Methods:
+    snap() - plays a game of snap
+    """
     def __init__(self):
         DeckOfCards.__init__(self)
         
     def snap(self, number_of_players):
+        """
+        Plays a game of Snap.
+
+        Args:
+            number_of_players (int): The number of players in the game.
+        """
         central_pile = []
         play = self.deal(number_of_players)
         player = 1
-        for i in play:
-            print(f"Player {player} turns over a", i[0])
-            #remove from players hand and into central pile
-            central_pile.append(i[0])
-            i.pop(0)
-            #check to see if the central pile's top two cards are identical
-            if len(central_pile) > 1:
-                if central_pile[-1].value == central_pile[-2].value:
-                    print(f"\nPLAYER {player} YELLS SNAP\n")
-                    #put all the central pile into player's hand
-                    for cards in range(len(central_pile)):
-                        i.append(central_pile.pop(-1))
-            if len(i) == 0:
-                print("Player {player} has run out of cards. game over")
-                break
-            player += 1
+        players_without_cards = 0
+        turn = 1
+        while players_without_cards == 0:
+            for i in play:
+                #remove from players hand and into central pile
+                if len(i) > 0:
+                    print(f"\nTurn #{turn} Player {player} flips over the", i[0])
+                    turn += 1
+                    central_pile.append(i[0])
+                    i.pop(0)
+                    if len(i) == 0:
+                        players_without_cards += 1
+                        print(f"Player {player} has run out of cards!")
+                        break
+                    
+                #check to see if the central pile's top two cards are identical
+                if len(central_pile) > 1:
+                    if central_pile[-1].value == central_pile[-2].value:
+                        print(f"PLAYER {player} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
+                        #put all the central pile into player's hand
+                        for cards in range(len(central_pile)):
+                            i.append(central_pile.pop(-1))
+        
+                player += 1
+                if player > number_of_players:
+                    player = 1
             
-        print("\nCentral pile:", central_pile)
-        print()
-        player_count = 1
+                print("Central pile:", central_pile)
+                print()
+                player_count = 1
+                for i in play:
+                    print(f"Player {player_count}:", i)
+                    player_count += 1
+                
+        card_counts = []
         for i in play:
-            print(f"Player {player_count}:", i)
-            player_count += 1
+            card_counts.append(len(i))
+        winner = 0
+        most_cards = 0
+        for i in range(len(card_counts)):
+            if card_counts[i] > most_cards:
+                most_cards = card_counts[i]
+                winner = i + 1
+        print(f"Player {winner} has won the game with {most_cards} cards!")
+
 
 def main():
     # deck.shuffle()
