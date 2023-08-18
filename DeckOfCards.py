@@ -111,8 +111,7 @@ class Player(DeckOfCards):
         player = 1
         players_without_cards = 0
         turn = 1
-        random_player = random.randint(0,3)
-        random_players_cards = play[random_player]
+
         
         def add_cards():
             ##if you want a random player to yell snap and get all the cards:
@@ -134,6 +133,8 @@ class Player(DeckOfCards):
                 
         while players_without_cards == 0:
             for i in play:
+                random_player = random.randint(0,3)
+                random_players_cards = play[random_player]
                 #remove from players hand and into central pile
                 if len(i) > 0:
                     print(f"\nTurn #{turn} Player {player} flips over the", i[0])
