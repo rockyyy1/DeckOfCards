@@ -111,6 +111,8 @@ class Player(DeckOfCards):
         player = 1
         players_without_cards = 0
         turn = 1
+        random_player = random.randint(1,4)
+        random_players_cards = play[random_player]
         while players_without_cards == 0:
             for i in play:
                 #remove from players hand and into central pile
@@ -127,10 +129,15 @@ class Player(DeckOfCards):
                 #check to see if the central pile's top two cards are identical
                 if len(central_pile) > 1:
                     if central_pile[-1].value == central_pile[-2].value:
-                        print(f"PLAYER {player} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
-                        #put all the central pile into player's hand
+                        #if you want the player who just placed down the card to yell snap and get all the cards:
+                        #print(f"PLAYER {player} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
+                        #for cards in range(len(central_pile)):
+                        #    i.append(central_pile.pop(-1))
+
+                        #if you want a random player to yell snap and get all the cards:
+                        print(f"PLAYER {random_player+1} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
                         for cards in range(len(central_pile)):
-                            i.append(central_pile.pop(-1))
+                            random_players_cards.append(central_pile.pop(-1))
         
                 player += 1
                 if player > number_of_players:
@@ -153,7 +160,6 @@ class Player(DeckOfCards):
                 most_cards = card_counts[i]
                 winner = i + 1
         print(f"Player {winner} has won the game with {most_cards} cards!")
-
 
 def main():
     # deck.shuffle()
