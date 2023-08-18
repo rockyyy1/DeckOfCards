@@ -111,8 +111,27 @@ class Player(DeckOfCards):
         player = 1
         players_without_cards = 0
         turn = 1
-        random_player = random.randint(1,4)
+        random_player = random.randint(0,3)
         random_players_cards = play[random_player]
+        
+        def add_cards():
+            ##if you want a random player to yell snap and get all the cards:
+            print(f"PLAYER {random_player+1} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
+            for cards in range(len(central_pile)):
+                random_players_cards.append(central_pile.pop(-1))
+
+            #if you want the player who just placed down the card to yell snap and get all the cards:
+            #print(f"PLAYER {player} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
+            #for cards in range(len(central_pile)):
+            #    i.append(central_pile.pop(-1))
+
+        def check_player_card_count(hand):
+            cards_in_hand = len(hand)
+            if cards_in_hand == 0:
+                return True
+            else:
+                return False
+                
         while players_without_cards == 0:
             for i in play:
                 #remove from players hand and into central pile
@@ -121,7 +140,8 @@ class Player(DeckOfCards):
                     turn += 1
                     central_pile.append(i[0])
                     i.pop(0)
-                    if len(i) == 0:
+                    player_with_no_hand = check_player_card_count(i)
+                    if player_with_no_hand == True:
                         players_without_cards += 1
                         print(f"Player {player} has run out of cards!")
                         break
@@ -129,15 +149,7 @@ class Player(DeckOfCards):
                 #check to see if the central pile's top two cards are identical
                 if len(central_pile) > 1:
                     if central_pile[-1].value == central_pile[-2].value:
-                        #if you want the player who just placed down the card to yell snap and get all the cards:
-                        #print(f"PLAYER {player} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
-                        #for cards in range(len(central_pile)):
-                        #    i.append(central_pile.pop(-1))
-
-                        #if you want a random player to yell snap and get all the cards:
-                        print(f"PLAYER {random_player+1} YELLS SNAP over the {central_pile[-2]} and collects {len(central_pile)} cards")
-                        for cards in range(len(central_pile)):
-                            random_players_cards.append(central_pile.pop(-1))
+                        add_cards()
         
                 player += 1
                 if player > number_of_players:
