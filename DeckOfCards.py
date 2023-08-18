@@ -109,9 +109,8 @@ class Player(DeckOfCards):
         central_pile = []
         play = self.deal(number_of_players)
         player = 1
-        players_without_cards = 0
         turn = 1
-
+        all_players_have_cards = True
         
         def add_cards():
             ##if you want a random player to yell snap and get all the cards:
@@ -127,11 +126,11 @@ class Player(DeckOfCards):
         def check_player_card_count(hand):
             cards_in_hand = len(hand)
             if cards_in_hand == 0:
-                return True
-            else:
                 return False
+            else:
+                return True
                 
-        while players_without_cards == 0:
+        while all_players_have_cards:
             for i in play:
                 random_player = random.randint(0,3)
                 random_players_cards = play[random_player]
@@ -141,9 +140,8 @@ class Player(DeckOfCards):
                     turn += 1
                     central_pile.append(i[0])
                     i.pop(0)
-                    player_with_no_hand = check_player_card_count(i)
-                    if player_with_no_hand == True:
-                        players_without_cards += 1
+                    all_players_have_cards = check_player_card_count(i)
+                    if all_players_have_cards == False:
                         print(f"Player {player} has run out of cards!")
                         break
                     
